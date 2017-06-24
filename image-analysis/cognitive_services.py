@@ -61,3 +61,11 @@ def getFaces(url):
     except Exception as e:
         print('Error:')
         print(e)
+
+
+def getTimeStamp(url):
+    file = url.split('/')
+    date = file[len(file)-1].split(' ')[0]
+    time = file[len(file)-1].split(' ')[1]
+    return date + 'T' + ':'.join(time.split('.'))+'Z'
+

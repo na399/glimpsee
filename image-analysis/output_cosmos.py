@@ -31,9 +31,15 @@ collection = next((coll for coll in client.ReadCollections(db['_self']) if coll[
 with open('urls.txt', 'r') as f:
     blob_urls = [line.rstrip('\n') for line in f]
 
-for url in blob_urls[:5]:
+
+# %%timeit -r 1 -n 1
+counter = 0
+for url in blob_urls:
     result = cognitive_services.getTags(url)
+    if(result['faces']):
+        result['faceResults'] = cognitive_services.getFaces(url)
+    result['url'] = url
+    result['creationTimeStamp'] = cognitive_services.getTimeStamp(url)
     client.CreateDocument(collection['_self'], result)
-
-
-
+    print(counter+1, url)
+    counter += 1
