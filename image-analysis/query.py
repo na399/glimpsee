@@ -24,16 +24,29 @@ options['enableScanInQuery'] = True
 
 
 
+query = {'query': 'SELECT * FROM c WHERE c.creationTimeStamp = "2017-05-20T21:39:27Z"'}
+
 query = {'query': 'SELECT * FROM c WHERE c.tags[0].name = "tree"'}
 
-query = {'query': """SELECT * FROM c WHERE c.tags[0].name = 'outdoor'
-                      OR c.tags[1].name = 'outdoor'
-                      OR c.tags[2].name = 'outdoor'
-                      OR c.tags[3].name = 'outdoor'
-                      OR c.tags[4].name = 'outdoor'"""}
+
+query = {'query': """
+SELECT tag, f.url FROM f
+JOIN tag IN f.tags
+WHERE tag.confidence > 0.9
+"""}
 
 
-# query = {'query': 'SELECT * FROM c WHERE c.creationTimeStamp = "2017-05-20T21:39:27Z"'}
+query = {'query': """
+SELECT f.color, f.url FROM f
+JOIN tag IN f.tags
+WHERE tag.name = 'outdoor' AND f.color.dominantColorBackground = 'Black'
+"""}
+
+query = {'query': """
+SELECT f.faceResults, f.url FROM f
+JOIN face IN f.faceResults
+WHERE face.faceAttributes.emotion.happiness > 0.7
+"""}
 
 
 result_iterable = client.QueryDocuments(collection['_self'], query, options)
