@@ -1,7 +1,3 @@
-/*-----------------------------------------------------------------------------
-To learn more about this template please visit
-https://aka.ms/abs-node-proactive
------------------------------------------------------------------------------*/
 "use strict";
 var builder = require("botbuilder");
 var botbuilder_azure = require("botbuilder-azure");
@@ -17,55 +13,225 @@ var connector = useEmulator ? new builder.ChatConnector() : new botbuilder_azure
     openIdMetadata: process.env['BotOpenIdMetadata']
 });
 
+
+
+
+var DocumentDBClient = require('documentdb').DocumentClient
+    , fs = require('fs')
+    , async = require('async')
+    , databaseId = 'afws'
+    , collectionId = 'features'
+    , dbLink = 'dbs/' + databaseId
+    , collLink = dbLink + '/colls/' + collectionId;
+
+
+var host = 'https://glimpsee.documents.azure.com';
+var DB_MASTERKEY = process.env.DB_MASTERKEY;
+
+
+// Establish a new instance of the DocumentDBClient to be used throughout this bot
+var client = new DocumentDBClient( host, { masterKey: DB_MASTERKEY });
+
+
+
 var bot = new builder.UniversalBot(connector);
 bot.localePath(path.join(__dirname, './locale'));
 
-// Intercept trigger event (ActivityTypes.Trigger)
-bot.on('trigger', function (message) {
-    // handle message from trigger function
-    var queuedMessage = message.value;
-    var reply = new builder.Message()
-        .address(queuedMessage.address)
-        .text('This is coming from the trigger: ' + queuedMessage.text);
-    bot.send(reply);
-});
 
-// Handle message from user
-bot.dialog('/', function (session) {
-    var queuedMessage = { address: session.message.address, text: session.message.text };
-    // add message to queue
-    session.sendTyping();
-    var queueSvc = azure.createQueueService(process.env.AzureWebJobsStorage);
-    queueSvc.createQueueIfNotExists('bot-queue', function(err, result, response){
-        if(!err){
-            // Add the message to the queue
-            var queueMessageBuffer = new Buffer(JSON.stringify(queuedMessage)).toString('base64');
-            queueSvc.createMessage('bot-queue', queueMessageBuffer, function(err, result, response){
-                if(!err){
-                    // Message inserted
-                    session.send('Your message (\'' + session.message.text + '\') has been added to a queue, and it will be sent back to you via a Function');
-                } else {
-                    // this should be a log for the dev, not a message to the user
-                    session.send('There was an error inserting your message into queue');
-                }
-            });
-        } else {
-            // this should be a log for the dev, not a message to the user
-            session.send('There was an error creating your queue');
+// Anytime the major version is incremented any existing conversations will be restarted.
+bot.use(builder.Middleware.dialogVersion({ version: 0.2, message: 'Update found! Resett initiated!', resetCommand: /^reset/i }));
+
+// End Conversation with 'goodbye'
+bot.endConversationAction('Bye!', { matches: /^goodbye/i });
+
+// Waterfall conversation
+bot.dialog('/', [
+    // WELCOME & ASK NAME
+    function (session) {
+        session.sendTyping();
+        setTimeout(function () {
+            session.send("Hi! This is GlimpSeeBot speaking. :D");
+        }, 10);
+        setTimeout(function () {
+            session.beginDialog('/options');
+        }, 20);
+    }
+]);
+
+
+bot.dialog('/options',[
+    function (session) {
+        builder.Prompts.choice(session,
+            "What would you like to GlimpSee?",
+            ["Emotions", "Tags", "Colours"]
+        );
+    },
+
+    function (session, results) {
+        if (results.response.entity == "Emotions") {
+            session.beginDialog('/emotions');
+        } else if (results.response.entity == "Tags") {
+            session.beginDialog('/tags');
+        } else if (results.response.entity == "Colours") {
+            session.beginDialog('/colours');
         }
-    });
+    }
+]);
 
-});
+bot.dialog('/emotions',[
+    function (session) {
+        builder.Prompts.choice(session,
+            "Emotion?",
+            ["happiness", "surprise", "neutral", "contempt"]
+        );
+    },
+
+    function (session, results) {
+
+            var querySpec = {
+                query: 'SELECT f.url FROM f JOIN face IN f.faceResults WHERE face.faceAttributes.emotion.' + results.response.entity + '> 0.9',
+            };
+
+            client.queryDocuments(collLink, querySpec).toArray(function (err, qresults) {
+
+
+                var resultsLen = qresults.length;
+
+                if (err || resultsLen == 0){
+                    session.send("not found");
+                    session.beginDialog('/options');
+                } else {
+
+                    var msg = new builder.Message(session);
+                    msg.attachmentLayout(builder.AttachmentLayout.carousel);
+
+                    var images = [];
+
+                    var i = 0;
+
+
+                    while (i < 10 && i < resultsLen) {
+                        images.push(new builder.HeroCard(session)
+                            .images([builder.CardImage.create(session, qresults[i]['url'])]));
+                        i++;
+                    };
+
+                    msg.attachments(images);
+                    session.send(msg);
+                    session.beginDialog('/options');
+                }
+
+            });
+
+    }
+]);
+
+
+bot.dialog('/tags',[
+    function (session) {
+        builder.Prompts.text(session, "Which tag do you want to GlimpSee?");
+    },
+
+    function (session, results) {
+
+        var querySpec = {
+            query: 'SELECT f.url FROM f JOIN tag IN f.tags WHERE tag.name = "' + results.response + '"',
+        };
+
+
+        client.queryDocuments(collLink, querySpec).toArray(function (err, qresults) {
+
+
+            var resultsLen = qresults.length;
+
+
+
+            if (err || resultsLen == 0){
+                session.send("not found");
+                session.beginDialog('/options');
+            } else {
+
+                var msg = new builder.Message(session);
+                msg.attachmentLayout(builder.AttachmentLayout.carousel);
+
+                var images = [];
+
+                var i = 0;
+
+
+                while (i < 10 && i < resultsLen) {
+                    images.push(new builder.HeroCard(session)
+                        .images([builder.CardImage.create(session, qresults[i]['url'])]));
+                    i++;
+                };
+
+                msg.attachments(images);
+                session.send(msg);
+                session.beginDialog('/options');
+            }
+
+        });
+
+    }
+]);
+
+
+bot.dialog('/colours',[
+    function (session) {
+        builder.Prompts.text(session, "Which color do you want to GlimpSee?");
+    },
+
+    function (session, results) {
+
+        var querySpec = {
+            query: 'SELECT f.url FROM f WHERE f.color.dominantColorBackground = "' + results.response + '"',
+        };
+
+
+        client.queryDocuments(collLink, querySpec).toArray(function (err, qresults) {
+
+
+            var resultsLen = qresults.length;
+
+            if (err || resultsLen == 0){
+                session.send("not found");
+                session.beginDialog('/options');
+            } else {
+
+                var msg = new builder.Message(session);
+                msg.attachmentLayout(builder.AttachmentLayout.carousel);
+
+                var images = [];
+
+                var i = 0;
+
+
+                while (i < 10 && i < resultsLen) {
+                    images.push(new builder.HeroCard(session)
+                        .images([builder.CardImage.create(session, qresults[i]['url'])]));
+                    i++;
+                };
+
+                msg.attachments(images);
+                session.send(msg);
+                session.beginDialog('/options');
+            }
+
+        });
+
+    }
+]);
 
 if (useEmulator) {
     var restify = require('restify');
     var server = restify.createServer();
     server.listen(3978, function() {
-        console.log('test bot endpont at http://localhost:3978/api/messages');
+        console.log('test bot endpoint at http://localhost:3978/api/messages');
     });
     server.post('/api/messages', connector.listen());    
 } else {
     module.exports = { default: connector.listen() }
 }
+
 
 
