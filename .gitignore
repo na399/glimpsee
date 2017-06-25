@@ -203,3 +203,10 @@ fabric.properties
 
 photos
 
+
+# Bot
+**/*/node_modules/
+typings/
+node_modules/
+*.js.map
+
