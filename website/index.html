@@ -1,0 +1,487 @@
+<!DOCTYPE HTML>
+<!--
+Made with love by Tine Kühnel <3
+-->
+<html>
+	<head>
+		<title>Stellar by HTML5 UP</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+		<link rel="stylesheet" href="assets/css/main.css" />
+        <link href="https://afeld.github.io/emoji-css/emoji.css" rel="stylesheet">
+		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+	</head>
+    
+    
+    
+      <style>
+        #fish {
+            position: relative;
+            /*border: 1px solid #999;*/
+            width: 1000px;
+            height: 400px;
+            background-color: #fefefe;
+            overflow: hidden;
+            margin: 40px;
+        }
+            </style>
+    
+	<body>
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header" class="alt">
+						<span class="logo"><img src="images/glimsee2.gif" height="120px" width="120px" alt="" /></span>
+						<h1>GlimpSee</h1>
+						<p>Getting visual KPI's from your current and past events
+						</p>
+					</header>
+
+				<!-- Nav -->
+					<nav id="nav">
+						<ul>
+							<li><a href="#intro" class="active">Explore</a></li>
+							<li><a href="#first">Emotion</a></li>
+							<li><a href="#second">Scene</a></li>
+							<li><a href="#cta">Color</a></li>
+                            <li><a href="#cta3">Object</a></li>
+                        
+						</ul>
+					</nav>
+
+				<!-- Main -->
+					<div id="main">
+
+						<!-- Introduction -->
+							<section id="intro" class="main">
+								<div class="spotlight">
+									<div class="content">
+										<header class="major">
+											<h2>Explore any #EVENT</h2>
+										</header>
+                                        
+                                        
+                            
+										<p>
+                                          Use the power of AI to capture your visual KPI’s from your event in real time.
+Tap in the hashtag for your given event and get the most dominant emotion, scene and color. 
+</p>
+                                        
+                                                 <img src="knap2-01.png" alt="" height="200" width="500"/>
+									
+									</div>
+									<span class="image"><img src="rockconcert5-02.jpg" alt="" /></span>
+								</div>
+							</section>
+
+						<!-- First Section -->
+							<section id="first" class="main special">
+								<header class="major">
+																	<h2>HAPPINESS is everywhere</h2>
+								                                     
+
+    <canvas id="fish" width="1000" height="400"></canvas>
+
+    <script src="kinjs.js"></script>
+    <script src="fishey-canvas.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function (event) {
+            var canvas = document.getElementById("fish");
+
+            var nx = 30;
+            var ny = 1;
+
+            var scale = [canvas.clientWidth, canvas.clientHeight];
+            var boundX = [0, nx * scale[0] / 4];
+            var boundY =  [0, 0];
+            var sizeX = 400;
+            var sizeY = 400;
+
+
+
+            var images = [
+'https://glimpsee.blob.core.windows.net/afws/2015-12-31 23.04.18 1152422243567139827_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2016-01-15 18.28.04 1163154843130656973_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2016-03-01 17.00.28 1196450439815756669_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2016-05-06 18.57.43 1244314452163295684_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2016-06-25 13.13.00 1280379735171797120_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2016-06-25 14.10.59 1280408922989451644_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2016-06-25 15.16.15 1280441773046646849_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2016-06-25 15.40.42 1280454075041144112_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2016-06-25 16.05.51 1280466738525632310_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2016-06-25 21.46.53 1280638384318370993_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2016-06-26 16.35.00 1281206186368388330_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2016-06-26 18.46.23 1281272311391415242_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2016-09-06 17.40.06 1333422801394350724_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2016-10-21 08.56.32 1365774190296584209_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2016-10-24 08.24.39 1367932468757712615_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2017-04-14 12.32.10 1492718472415957552_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2017-04-17 02.27.34 1494588498349912682_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2017-06-22 14.26.06 1542785346654468835_awfs17.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2017-06-22 23.10.33 1543049311948287925_awfs17.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2017-06-23 01.46.54 1543128000723522105_awfs17.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2017-06-23 08.33.01 1543332407955136094_awfs17.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2017-06-23 10.17.30 1543384994009313712_awfs17.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2017-06-23 18.44.02 1543639944004652112_awfs17.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2017-06-23 20.24.25 1543690467920884993_awfs17.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2017-06-23 23.35.31 1543786646741306510_awfs17.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2017-06-24 11.28.18 1544145407163791861_awfs17.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2017-06-24 12.35.29 1544179220963914561_awfs17.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2017-06-24 13.20.26 1544201842774762059_awfs17.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2017-06-24 14.03.42 1544223618066396934_awfs17.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2017-06-24 14.17.58 1544230805232277721_370316277.jpg'];
+
+      //*      var ix = 0;
+         //   for (var x = 0; x < nx; x++) {
+           //     for (var y = 0; y < ny; y++) {
+             //       images.push("img/" + (1 + ((x + y) % 20)) + ".jpg");
+               // }
+        //    }//
+        
+  
+            
+            console.log('length: ', images.length);
+
+
+
+            var fish = fisheyeElementsCanvas(canvas, images, nx, [sizeX, sizeY], scale, boundX, boundY);
+
+            var pos = [boundX[1] / 2, boundY[1]];
+
+            fish(boundX[1] - pos[0], boundY[1] - pos[1]);
+            var options;
+            var surface = new KineticSurface(canvas, options = {
+                boundX: boundX,
+                boundY: boundY,
+                initialPosition: pos,
+                snapX: fish.snapX,
+                snapY: fish.snapY,
+                friction: 0.004,
+                tap: function (x, y) {
+                    x = (x + document.body.scrollLeft + document.documentElement.scrollLeft) - canvas.offsetLeft;
+                    y = (y + document.body.scrollTop + document.documentElement.scrollTop) - canvas.offsetTop;
+                    var px = x / canvas.offsetWidth;
+                    var py = y / canvas.offsetHeight;
+                    var mapped = fish.inverse(px, py, true);
+                    surface.moveTo(boundX[0] + (1 - mapped.x) * (boundX[1] - boundX[0]), boundY[0] + (1 - mapped.y) * (boundY[1] - boundY[0]));
+                },
+                update: function (x, y) { fish(boundX[1] - x, boundY[1] - y); }
+            });
+
+        });
+    </script>
+                                </header>
+								</footer>
+							</section>
+
+						<!-- Second Section -->
+							<section id="second" class="main special">
+								<header class="major">
+									<h2>OUTDOOR is everywhere</h2>
+								                                     
+
+    <canvas id="fish2" width="1000" height="400"></canvas>
+
+    <script src="kinjs.js"></script>
+    <script src="fishey-canvas.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function (event) {
+            var canvas = document.getElementById("fish2");
+
+            var nx = 30;
+            var ny = 1;
+
+            var scale = [canvas.clientWidth, canvas.clientHeight];
+            var boundX = [0, nx * scale[0] / 4];
+            var boundY =  [0, 0];
+            var sizeX = 400;
+            var sizeY = 400;
+
+
+
+            var images = [
+'https://glimpsee.blob.core.windows.net/afws/2016-01-20 17.02.03 1166735430051428418_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2016-02-22 17.00.25 1190652211769899086_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2016-03-01 17.00.28 1196450439815756669_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2016-03-27 23.03.39 1215447201331018112_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2016-03-30 14.24.03 1217360009165535430_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2016-05-06 18.57.43 1244314452163295684_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2016-05-12 17.05.47 1248606770420775893_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2016-05-26 17.37.42 1258769694598625560_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2016-06-08 20.13.50 1268270364129228988_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2016-06-10 18.28.37 1269666952781232132_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2016-06-23 17.41.22 1279065254987561742_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2016-06-24 14.57.32 1279707577932060961_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2016-06-25 10.48.36 1280307054921512421_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2016-06-25 11.57.59 1280341982996336829_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2016-06-25 15.08.33 1280437897493174840_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2016-06-25 15.16.15 1280441773046646849_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2016-06-25 15.40.42 1280454075041144112_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2016-06-25 20.10.32 1280589890270421564_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2016-06-26 00.00.37 1280705692655007794_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2016-06-26 11.52.06 1281063794889923550_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2016-06-26 15.36.27 1281176716458592793_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2016-06-26 20.16.58 1281317899373862178_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2016-06-26 21.28.20 1281353820752152357_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2016-07-06 18.25.06 1288509354789975471_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2016-09-19 17.39.20 1342844501869545265_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2016-10-12 17.06.46 1359497950434632780_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2017-01-04 18.18.05 1420445208625352878_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2017-03-13 17.33.12 1469707363279119802_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2017-03-28 18.30.54 1480577846601854715_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2017-05-11 17.09.06 1512426807344113777_370316277.jpg'];
+
+      //*      var ix = 0;
+         //   for (var x = 0; x < nx; x++) {
+           //     for (var y = 0; y < ny; y++) {
+             //       images.push("img/" + (1 + ((x + y) % 20)) + ".jpg");
+               // }
+        //    }//
+        
+  
+            
+            console.log('length: ', images.length);
+
+
+
+            var fish = fisheyeElementsCanvas(canvas, images, nx, [sizeX, sizeY], scale, boundX, boundY);
+
+            var pos = [boundX[1] / 2, boundY[1]];
+
+            fish(boundX[1] - pos[0], boundY[1] - pos[1]);
+            var options;
+            var surface = new KineticSurface(canvas, options = {
+                boundX: boundX,
+                boundY: boundY,
+                initialPosition: pos,
+                snapX: fish.snapX,
+                snapY: fish.snapY,
+                friction: 0.004,
+                tap: function (x, y) {
+                    x = (x + document.body.scrollLeft + document.documentElement.scrollLeft) - canvas.offsetLeft;
+                    y = (y + document.body.scrollTop + document.documentElement.scrollTop) - canvas.offsetTop;
+                    var px = x / canvas.offsetWidth;
+                    var py = y / canvas.offsetHeight;
+                    var mapped = fish.inverse(px, py, true);
+                    surface.moveTo(boundX[0] + (1 - mapped.x) * (boundX[1] - boundX[0]), boundY[0] + (1 - mapped.y) * (boundY[1] - boundY[0]));
+                },
+                update: function (x, y) { fish(boundX[1] - x, boundY[1] - y); }
+            });
+
+        });
+    </script>
+								</header>
+								
+								</footer>
+							</section>
+
+						<!-- Get Started -->
+							<section id="cta" class="main special">
+								<header class="major">
+									<h2>PINK and PURPLE are everywhere</h2>
+							
+    <canvas id="fish3" width="1000" height="400"></canvas>
+
+    <script src="kinjs.js"></script>
+    <script src="fishey-canvas.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function (event) {
+            var canvas = document.getElementById("fish3");
+
+            var nx = 24;
+            var ny = 1;
+
+            var scale = [canvas.clientWidth, canvas.clientHeight];
+            var boundX = [0, nx * scale[0] / 4];
+            var boundY =  [0, 0];
+            var sizeX = 400;
+            var sizeY = 400;
+
+
+
+            var images = [
+                'https://glimpsee.blob.core.windows.net/afws/2016-01-02 03.24.33 1153278002588809251_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2016-03-27 06.50.19 1214957311338216110_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2016-05-03 16.09.37 1242055520321534747_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2016-05-09 12.19.39 1246288429609908267_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2016-07-20 17.14.03 1298620458677374336_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2016-07-21 20.30.48 1299444260709499949_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2016-08-24 13.00.43 1323860098132833270_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2016-09-13 17.40.20 1338496345052766867_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2016-10-21 04.31.44 1365640913317444330_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2016-10-24 08.24.39 1367932468757712615_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2016-12-31 00.25.58 1417006488844994540_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2017-01-09 17.47.28 1424053671637142703_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2017-02-20 18.06.07 1454503641582180296_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2017-03-24 12.07.29 1477515962604757455_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2017-04-14 04.57.03 1492489404579886095_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2017-06-07 12.59.14 1531869982542367820_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2017-06-24 15.16.02 1544260028716876361_awfs17.jpg',
+'https://glimpsee.blob.core.windows.net/afws/2016-04-17 02.58.06 1230060723083934508_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2016-07-21 17.37.49 1299357193988115163_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2016-10-22 01.59.48 1366289215369159481_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2016-12-14 18.18.23 1405225062579552888_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2017-02-17 17.52.08 1452322279307706096_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2017-02-28 18.05.04 1460301314906248512_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2017-06-16 12.44.13 1538385411390712669_370316277.jpg'];
+
+      //*      var ix = 0;
+         //   for (var x = 0; x < nx; x++) {
+           //     for (var y = 0; y < ny; y++) {
+             //       images.push("img/" + (1 + ((x + y) % 20)) + ".jpg");
+               // }
+        //    }//
+        
+  
+            
+            console.log('length: ', images.length);
+
+
+
+            var fish = fisheyeElementsCanvas(canvas, images, nx, [sizeX, sizeY], scale, boundX, boundY);
+
+            var pos = [boundX[1] / 2, boundY[1]];
+
+            fish(boundX[1] - pos[0], boundY[1] - pos[1]);
+            var options;
+            var surface = new KineticSurface(canvas, options = {
+                boundX: boundX,
+                boundY: boundY,
+                initialPosition: pos,
+                snapX: fish.snapX,
+                snapY: fish.snapY,
+                friction: 0.004,
+                tap: function (x, y) {
+                    x = (x + document.body.scrollLeft + document.documentElement.scrollLeft) - canvas.offsetLeft;
+                    y = (y + document.body.scrollTop + document.documentElement.scrollTop) - canvas.offsetTop;
+                    var px = x / canvas.offsetWidth;
+                    var py = y / canvas.offsetHeight;
+                    var mapped = fish.inverse(px, py, true);
+                    surface.moveTo(boundX[0] + (1 - mapped.x) * (boundX[1] - boundX[0]), boundY[0] + (1 - mapped.y) * (boundY[1] - boundY[0]));
+                },
+                update: function (x, y) { fish(boundX[1] - x, boundY[1] - y); }
+            });
+
+        });
+    </script>
+                                </header>
+						</section>
+					
+        
+        
+        				<section id="cta3" class="main special">
+								<header class="major">
+									<h2>Headwear is everywhere</h2>
+							
+    <canvas id="fish4" width="1000" height="400"></canvas>
+
+    <script src="kinjs.js"></script>
+    <script src="fishey-canvas.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function (event) {
+            var canvas = document.getElementById("fish4");
+
+            var nx = 22;
+            var ny = 1;
+
+            var scale = [canvas.clientWidth, canvas.clientHeight];
+            var boundX = [0, nx * scale[0] / 4];
+            var boundY =  [0, 0];
+            var sizeX = 400;
+            var sizeY = 400;
+
+
+
+            var images = [
+                'https://glimpsee.blob.core.windows.net/afws/2016-03-04 17.24.51 1198637037143718569_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2016-06-25 14.10.59 1280408922989451644_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2016-06-25 16.05.51 1280466738525632310_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2016-09-02 17.24.01 1330515601156004895_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2016-09-23 16.56.05 1345721832598625519_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2016-10-03 17.30.00 1352986661080165649_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2016-10-22 06.39.21 1366429915519720836_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2017-02-08 18.06.01 1445806278936191840_370316277.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2017-06-22 23.10.33 1543049311948287925_awfs17.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2017-06-23 01.46.54 1543128000723522105_awfs17.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2017-06-23 13.06.19 1543469967335678229_awfs17.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2017-06-24 14.03.45 1544223642912951467_awfs17.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2017-06-24 14.55.03 1544249467896590396_awfs17.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2017-06-24 15.12.59 1544258491529810799_awfs17.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2017-06-24 16.05.55 1544285137676498566_awfs17.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2017-06-24 16.39.42 1544302136007816074_awfs17.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2017-06-24 16.50.59 1544307819967195677_awfs17.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2017-06-24 17.09.26 1544317101685086500_awfs17.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2017-06-24 17.28.21 1544326628158741882_awfs17.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2017-06-24 19.18.17 1544381953174798893_awfs17.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2017-06-24 20.23.56 1544414996564420166_awfs17.jpg',
+ 'https://glimpsee.blob.core.windows.net/afws/2017-06-24 21.14.46 1544440583144159253_awfs17.jpg'];
+
+      //*      var ix = 0;
+         //   for (var x = 0; x < nx; x++) {
+           //     for (var y = 0; y < ny; y++) {
+             //       images.push("img/" + (1 + ((x + y) % 20)) + ".jpg");
+               // }
+        //    }//
+        
+  
+            
+            console.log('length: ', images.length);
+
+
+
+            var fish = fisheyeElementsCanvas(canvas, images, nx, [sizeX, sizeY], scale, boundX, boundY);
+
+            var pos = [boundX[1] / 2, boundY[1]];
+
+            fish(boundX[1] - pos[0], boundY[1] - pos[1]);
+            var options;
+            var surface = new KineticSurface(canvas, options = {
+                boundX: boundX,
+                boundY: boundY,
+                initialPosition: pos,
+                snapX: fish.snapX,
+                snapY: fish.snapY,
+                friction: 0.004,
+                tap: function (x, y) {
+                    x = (x + document.body.scrollLeft + document.documentElement.scrollLeft) - canvas.offsetLeft;
+                    y = (y + document.body.scrollTop + document.documentElement.scrollTop) - canvas.offsetTop;
+                    var px = x / canvas.offsetWidth;
+                    var py = y / canvas.offsetHeight;
+                    var mapped = fish.inverse(px, py, true);
+                    surface.moveTo(boundX[0] + (1 - mapped.x) * (boundX[1] - boundX[0]), boundY[0] + (1 - mapped.y) * (boundY[1] - boundY[0]));
+                },
+                update: function (x, y) { fish(boundX[1] - x, boundY[1] - y); }
+            });
+
+        });
+    </script>
+                                </header>
+						</section>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+					</footer>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/skel.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
