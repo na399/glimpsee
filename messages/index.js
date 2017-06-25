@@ -39,7 +39,7 @@ bot.localePath(path.join(__dirname, './locale'));
 
 
 // Anytime the major version is incremented any existing conversations will be restarted.
-bot.use(builder.Middleware.dialogVersion({ version: 0.2, message: 'Update found! Resett initiated!', resetCommand: /^reset/i }));
+bot.use(builder.Middleware.dialogVersion({ version: 0.4, message: 'Update found! Resett initiated!', resetCommand: /^reset/i }));
 
 // End Conversation with 'goodbye'
 bot.endConversationAction('Bye!', { matches: /^goodbye/i });
@@ -53,10 +53,29 @@ bot.dialog('/', [
             session.send("Hi! This is GlimpSeeBot speaking. :D");
         }, 10);
         setTimeout(function () {
-            session.beginDialog('/options');
+            session.beginDialog('/platform');
         }, 20);
     }
 ]);
+
+
+bot.dialog('/platform',[
+    function (session) {
+        builder.Prompts.choice(session,
+            "Which platform?",
+            ["Web", "FB", "SLACK"]
+        );
+    },
+
+    function (session, results) {
+
+        session.userData.platform = results.response.entity;
+
+        session.beginDialog('/options');
+    }
+]);
+
+
 
 
 bot.dialog('/options',[
@@ -109,7 +128,6 @@ bot.dialog('/emotions',[
 
                     var i = 0;
 
-
                     while (i < 10 && i < resultsLen) {
                         images.push(new builder.HeroCard(session)
                             .images([builder.CardImage.create(session, qresults[i]['url'])]));
@@ -129,7 +147,7 @@ bot.dialog('/emotions',[
 
 bot.dialog('/tags',[
     function (session) {
-        builder.Prompts.text(session, "Which tag do you want to GlimpSee?");
+        builder.Prompts.text(session, "Which tag do you want to GlimpSee? e.g. crowd");
     },
 
     function (session, results) {
@@ -141,9 +159,7 @@ bot.dialog('/tags',[
 
         client.queryDocuments(collLink, querySpec).toArray(function (err, qresults) {
 
-
             var resultsLen = qresults.length;
-
 
 
             if (err || resultsLen == 0){
@@ -151,23 +167,52 @@ bot.dialog('/tags',[
                 session.beginDialog('/options');
             } else {
 
-                var msg = new builder.Message(session);
-                msg.attachmentLayout(builder.AttachmentLayout.carousel);
 
-                var images = [];
+                if (session.userData.platform == "Web"){
 
-                var i = 0;
+                    var msg = new builder.Message(session);
+                    msg.attachmentLayout(builder.AttachmentLayout.carousel);
+
+                    var images = [];
+
+                    var i = 0;
+
+                    while (i < 10 && i < resultsLen) {
+                        images.push(new builder.HeroCard(session)
+                            .images([builder.CardImage.create(session, qresults[i]['url'])]));
+                        i++;
+                    };
+
+                    msg.attachments(images);
+                    session.send(msg);
+                    session.beginDialog('/options');
+
+                } else {
 
 
-                while (i < 10 && i < resultsLen) {
-                    images.push(new builder.HeroCard(session)
-                        .images([builder.CardImage.create(session, qresults[i]['url'])]));
-                    i++;
-                };
+                    var i = 0;
 
-                msg.attachments(images);
-                session.send(msg);
-                session.beginDialog('/options');
+                    while (i < 10 && i < resultsLen) {
+
+                        session.send({
+                            attachments: [
+                                {
+                                    contentType: "image/jpg",
+                                    contentUrl: qresults[i]['url']
+                                }
+                            ]
+                        });
+
+                        i++;
+
+                    };
+
+                    session.beginDialog('/options');
+
+                }
+
+
+
             }
 
         });
@@ -178,7 +223,7 @@ bot.dialog('/tags',[
 
 bot.dialog('/colours',[
     function (session) {
-        builder.Prompts.text(session, "Which color do you want to GlimpSee?");
+        builder.Prompts.text(session, "Which color do you want to GlimpSee? e.g. Pink");
     },
 
     function (session, results) {
@@ -190,31 +235,60 @@ bot.dialog('/colours',[
 
         client.queryDocuments(collLink, querySpec).toArray(function (err, qresults) {
 
-
             var resultsLen = qresults.length;
+
 
             if (err || resultsLen == 0){
                 session.send("not found");
                 session.beginDialog('/options');
             } else {
 
-                var msg = new builder.Message(session);
-                msg.attachmentLayout(builder.AttachmentLayout.carousel);
 
-                var images = [];
+                if (session.userData.platform == "Web"){
 
-                var i = 0;
+                    var msg = new builder.Message(session);
+                    msg.attachmentLayout(builder.AttachmentLayout.carousel);
+
+                    var images = [];
+
+                    var i = 0;
+
+                    while (i < 10 && i < resultsLen) {
+                        images.push(new builder.HeroCard(session)
+                            .images([builder.CardImage.create(session, qresults[i]['url'])]));
+                        i++;
+                    };
+
+                    msg.attachments(images);
+                    session.send(msg);
+                    session.beginDialog('/options');
+
+                } else {
 
 
-                while (i < 10 && i < resultsLen) {
-                    images.push(new builder.HeroCard(session)
-                        .images([builder.CardImage.create(session, qresults[i]['url'])]));
-                    i++;
-                };
+                    var i = 0;
 
-                msg.attachments(images);
-                session.send(msg);
-                session.beginDialog('/options');
+                    while (i < 10 && i < resultsLen) {
+
+                        session.send({
+                            attachments: [
+                                {
+                                    contentType: "image/jpg",
+                                    contentUrl: qresults[i]['url']
+                                }
+                            ]
+                        });
+
+                        i++;
+
+                    };
+
+                    session.beginDialog('/options');
+
+                }
+
+
+
             }
 
         });
