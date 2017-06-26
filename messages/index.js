@@ -197,7 +197,7 @@ bot.dialog('/tags',[
                         session.send({
                             attachments: [
                                 {
-                                    contentType: "image/jepg",
+                                    contentType: "image/jpeg",
                                     contentUrl: qresults[i]['url']
                                 }
                             ]
@@ -273,7 +273,7 @@ bot.dialog('/colours',[
                         session.send({
                             attachments: [
                                 {
-                                    contentType: "image/jepg",
+                                    contentType: "image/jpeg",
                                     contentUrl: qresults[i]['url']
                                 }
                             ]
